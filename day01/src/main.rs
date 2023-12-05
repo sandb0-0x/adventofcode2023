@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::fs;
 
 fn calibration_value_part1(line: &str) -> u32 {
@@ -85,14 +84,13 @@ fn calibration_value_part2(line: &str) -> u32 {
 
 fn main() {
     let file_path = "input.txt";
-    // let file_path = "sample_input_pt2.txt";
     let contents = fs::read_to_string(file_path).expect("Unable to read file: {file_path}");
 
-    // let calibration_value_part1_sum: u32 = contents.lines().map(calibration_value_part1).sum();
-    // println!(
-    //     "Part One: calibration value sum: {}",
-    //     calibration_value_part1_sum
-    // );
+    let calibration_value_part1_sum: u32 = contents.lines().map(calibration_value_part1).sum();
+    println!(
+        "Part One: calibration value sum: {}",
+        calibration_value_part1_sum
+    );
 
     let calibration_value_part2_sum: u32 = contents.lines().map(calibration_value_part2).sum();
     println!(

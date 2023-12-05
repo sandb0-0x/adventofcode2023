@@ -48,8 +48,10 @@ fn part_one(part_num_vec: &Vec<PartNum>, symbol_map: &HashMap<(usize, usize), &s
 }
 
 fn part_two(part_num_vec: &Vec<PartNum>, symbol_map: &HashMap<(usize, usize), &str>) -> u32 {
+    // Map from (location) -> (All part numbers adjacent), for each gear
     let mut gears_to_part_numbers: HashMap<(usize, usize), Vec<u32>> = HashMap::new();
-    let parts_by_gears = part_num_vec
+    // Populate gears_to_part_numbers
+    part_num_vec
         .iter()
         .flat_map(|part_num: &PartNum| {
             part_num
@@ -66,9 +68,16 @@ fn part_two(part_num_vec: &Vec<PartNum>, symbol_map: &HashMap<(usize, usize), &s
                 .unwrap()
                 .push(part_value);
         });
+    // Compute sum of products of gear part numbers
     gears_to_part_numbers
         .into_iter()
-        .map(|(loc, part_value_vec)| if part_value_vec.len() == 2 {part_value_vec[0]*part_value_vec[1]} else {0})
+        .map(|(_, part_value_vec)| {
+            if part_value_vec.len() == 2 {
+                part_value_vec[0] * part_value_vec[1]
+            } else {
+                0
+            }
+        })
         .sum()
 }
 
@@ -77,8 +86,8 @@ fn main() {
     let symbol_re = Regex::new(r"[^\d.]").unwrap();
 
     let file_path = "input.txt";
-    // let file_path = "sample_input.txt";
     let file_contents = fs::read_to_string(file_path).expect("Unable to read file: {file_path}");
+    
     let part_num_vec: Vec<PartNum> = file_contents
         .lines()
         .zip(0..)
@@ -107,8 +116,8 @@ fn main() {
         .collect();
     // println!("{:?}", symbol_map);
 
-    // let part_one_solution = part_one(&part_num_vec, &symbol_map);
-    // println!("Part One -- Sum of Part Numbers: {part_one_solution}");
+    let part_one_solution = part_one(&part_num_vec, &symbol_map);
+    println!("Part One -- Sum of Part Numbers: {part_one_solution}");
     let part_two_solution = part_two(&part_num_vec, &symbol_map);
     println!("Part Two -- SumProduct of Gear-Adjacent parts: {part_two_solution}");
 }

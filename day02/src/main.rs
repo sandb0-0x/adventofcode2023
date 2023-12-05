@@ -41,7 +41,6 @@ fn process_game(input_line: &str) -> (u32, Vec<CubeSet>) {
     let re = Regex::new(r"Game (\d+): ([0-9a-z, ;]+)").unwrap();
     let line_cap = re.captures(input_line).unwrap();
     let game_index: u32 = line_cap.get(1).unwrap().as_str().parse().unwrap();
-    // println!("{game_index}");
     let game_data = line_cap.get(2).unwrap().as_str().split("; ");
     (game_index, game_data.map(process_cubes).collect())
 }
@@ -87,7 +86,6 @@ fn part_two(games: &Vec<(u32, Vec<CubeSet>)>) -> u32 {
 
 fn main() {
     let file_path = "input.txt";
-    // let file_path = "sample_input_pt2.txt";
     let contents = fs::read_to_string(file_path).expect("Unable to read file: {file_path}");
     let games: Vec<(u32, Vec<CubeSet>)> = contents.lines().map(process_game).collect();
 

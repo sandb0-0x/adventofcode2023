@@ -68,7 +68,7 @@ fn part_two(scratchcard_vec: &Vec<Scratchcard>) -> u32 {
 }
 
 fn main() {
-    let file_path = "sample_input.txt";
+    let file_path = "input.txt";
     let file_contents = fs::read_to_string(file_path).expect("Unable to read file: {file_path}");
     let scratchcard_vec: Vec<Scratchcard> = file_contents.lines().map(parse_scratchcard).collect();
 
