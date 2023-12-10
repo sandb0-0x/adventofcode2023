@@ -12,6 +12,12 @@ struct Node {
 }
 
 #[derive(Debug)]
+enum NodeInstructionResult {
+    ResultNode(String),
+    Success(u64),
+}
+
+#[derive(Debug)]
 struct NodeInstructionResultForGhosts {
     result_node: String,
     success_step_counts: HashSet<u64>,
