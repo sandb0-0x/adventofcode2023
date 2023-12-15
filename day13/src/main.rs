@@ -161,10 +161,6 @@ fn main() {
         }
     };
 
-    // rock_patterns
-    //     .iter()
-    //     .for_each(|rp| println!("Rock Pattern:\n{rp:?}"));
-
     let sum_of_mirror_notes = part_one(&rock_patterns);
     println!("Part One -- Sum of mirror notes: {sum_of_mirror_notes}");
 
