@@ -7,6 +7,16 @@ pub enum ParseFileError {
     WrappedError(Box<dyn error::Error>),
 }
 
+impl ParseFileError {
+    pub fn from_str(s: String) -> Self {
+        Self::CustomError(s)
+    }
+
+    pub fn from_err<E: error::Error + 'static>(err: E) -> Self {
+        Self::WrappedError(Box::new(err))
+    }
+}
+
 impl fmt::Display for ParseFileError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {

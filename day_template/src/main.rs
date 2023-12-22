@@ -1,3 +1,4 @@
+#[allow(unused)]
 mod parse_file_error;
 
 use parse_file_error::ParseFileError;
@@ -8,6 +9,7 @@ const PART_TWO_DESCRIPTION: &str = "Part Two Description";
 
 type Answer = usize;
 
+#[derive(Debug)]
 struct PuzzleInput;
 
 impl FromStr for PuzzleInput {
@@ -26,6 +28,7 @@ fn part_two(puzzle_input: &PuzzleInput) -> Answer {
 }
 
 fn main() {
+    // let file_path = "sample_input.txt";
     let file_path = "input.txt";
     let file_contents = fs::read_to_string(file_path).expect("Unable to read file: {file_path}");
 
@@ -38,8 +41,8 @@ fn main() {
     };
 
     let part_one_answer = part_one(&puzzle_input);
-    println!("Part One -- {PART_ONE_DESCRIPTION}, {part_one_answer}");
+    println!("Part One -- {PART_ONE_DESCRIPTION}\n{part_one_answer}");
 
     let part_two_answer = part_two(&puzzle_input);
-    println!("Part Two -- {PART_TWO_DESCRIPTION}, {part_two_answer}");
+    println!("Part Two -- {PART_TWO_DESCRIPTION}\n{part_two_answer}");
 }

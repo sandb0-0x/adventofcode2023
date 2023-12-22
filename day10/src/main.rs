@@ -176,8 +176,8 @@ fn part_two(tile_grid: &TileGrid) -> usize {
         tile_loop[1].col as isize - tile_loop[0].col as isize,
     );
     let ending_direction = (
-        tile_loop[n - 2].row as isize - tile_loop[n-1].row as isize,
-        tile_loop[n - 2].col as isize - tile_loop[n-1].col as isize,
+        tile_loop[n - 2].row as isize - tile_loop[n - 1].row as isize,
+        tile_loop[n - 2].col as isize - tile_loop[n - 1].col as isize,
     );
     let start_orientation = match (starting_direction, ending_direction) {
         ((1, 0), (0, 1)) | ((0, 1), (1, 0)) => Orientation::Southeast,
@@ -199,7 +199,7 @@ fn part_two(tile_grid: &TileGrid) -> usize {
                     &start_orientation
                 } else {
                     &tile.orientation
-                }
+                },
             )
         })
         .collect::<HashMap<_, _>>();
