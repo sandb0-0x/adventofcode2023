@@ -137,7 +137,7 @@ fn tilt_north_and_rotate(rock_grid: &Vec<Vec<RockType>>) -> Vec<Vec<RockType>> {
 
 #[allow(unused)]
 fn part_two(puzzle_input: &PuzzleInput) -> Answer {
-    let cycles = 1000000000;
+    let cycles = 1_000_000_000;
     let mut memo_map_str = HashMap::<String, String>::new();
     let mut rock_grid_str = pretty_print(&puzzle_input.rock_grid);
     for i in 0..cycles {
@@ -154,10 +154,51 @@ fn part_two(puzzle_input: &PuzzleInput) -> Answer {
                 let tilt_south = tilt_north_and_rotate(&tilt_west);
                 let tilt_east = tilt_north_and_rotate(&tilt_south);
                 pretty_print(&tilt_east)
-            }).clone();
+            })
+            .clone();
     }
     let rock_grid = rock_grid_str.parse::<PuzzleInput>().unwrap().rock_grid;
 
+    compute_load(&rock_grid)
+}
+
+#[allow(unused)]
+fn part_two_cycle_detection(puzzle_input: &PuzzleInput) -> Answer {
+    let cycles = 1_000_000_000usize;
+    // Todo: Use a bimap instead of two hashmaps, although it's the same underlying data
+    let mut previous_grids = HashMap::<String, usize>::new();
+    let mut previous_grids_by_index = HashMap::<usize, String>::new();
+    let mut rock_grid_str = pretty_print(&puzzle_input.rock_grid);
+    for i in 0..cycles {
+        if i % (cycles / 1000) == 0 {
+            println!("i: {i}");
+        }
+
+        if let Some(existing_index) = previous_grids.get(&rock_grid_str) {
+            // Cycle detected, determine the grid at i=cycles
+            let cycle_length = i - existing_index;
+            let offset = (cycles - existing_index) % cycle_length;
+            let final_grid_index = offset + existing_index;
+            rock_grid_str = previous_grids_by_index
+                .get(&final_grid_index)
+                .unwrap()
+                .clone();
+            break;
+        } else {
+            let rock_grid = rock_grid_str.parse::<PuzzleInput>().unwrap().rock_grid;
+            let tilt_north = tilt_north_and_rotate(&rock_grid);
+            let tilt_west = tilt_north_and_rotate(&tilt_north);
+            let tilt_south = tilt_north_and_rotate(&tilt_west);
+            let tilt_east = tilt_north_and_rotate(&tilt_south);
+
+            previous_grids.insert(rock_grid_str.clone(), i);
+            previous_grids_by_index.insert(i, rock_grid_str);
+
+            rock_grid_str = pretty_print(&tilt_east);
+        }
+    }
+
+    let rock_grid = rock_grid_str.parse::<PuzzleInput>().unwrap().rock_grid;
     compute_load(&rock_grid)
 }
 
@@ -177,7 +218,7 @@ fn main() {
     let part_one_answer = part_one(&puzzle_input);
     println!("Part One -- {PART_ONE_DESCRIPTION}\n{part_one_answer}");
 
-    let part_two_answer = part_two(&puzzle_input);
+    let part_two_answer = part_two_cycle_detection(&puzzle_input);
     println!("Part Two -- {PART_TWO_DESCRIPTION}, {part_two_answer}");
 
     match start_time.elapsed() {
